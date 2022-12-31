@@ -114,15 +114,15 @@ func TestStopSystem(t *testing.T) {
 	testSystem := newSystem()
 	StartSystem(testSystem)
 	config1, _ := GetComponent[*Config](testSystem, "testComponent3")
-	fmt.Printf("Config1: %v\n", config1)
 	stopped, err := StopSystem(testSystem)
 	if err != nil {
 		t.Errorf("Error stopping system: %v", err)
 	}
-	fmt.Printf("Config2: %v\n", config1)
-	config, err := GetComponent[*Config](stopped, "testComponent3")
-	if err != nil {
-		t.Errorf("Erro getting component: %v", err)
+	config2, err := GetComponent[*Config](stopped, "testComponent3")
+	if err == nil {
+		t.Errorf("Found component %v, when should not: %v", config2, err)
 	}
-	fmt.Printf("Stopped Component: %v", config)
+	if config1.started {
+		t.Errorf("Config component is started after system stop")
+	}
 }

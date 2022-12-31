@@ -11,13 +11,12 @@ type Component interface {
 
 type DepsMap = map[string]Component
 
-type FactoryFn = func(deps DepsMap) Component
-
 type SystemComponent struct {
-	Factory          FactoryFn
+	Factory          func(deps DepsMap) Component
 	StartedComponent Component
 	Deps             []string
 }
+
 type SystemMap = map[string]*SystemComponent
 
 // Returns the topological sorted list of components
